@@ -1,0 +1,404 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>srf01 Library &mdash; srf01 1.0.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/zerynth.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="srf01 1.0.0 documentation" href="index.html"/>
+        <link rel="prev" title="srf01" href="index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="index.html" class="fa fa-home"> srf01</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">srf01 Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#srf-class">Srf Class</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">srf01</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>srf01 Library</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/srf01.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <span class="target" id="module-srf01"></span><div class="section" id="srf01-library">
+<h1>srf01 Library<a class="headerlink" href="#srf01-library" title="Permalink to this headline">¶</a></h1>
+<p>This module contains class definitions and methods to access most of the functionality of srf01 Ultrasonic range finder.
+Sensor&#8217;s charactheristics and detailed descriptions can be found at <a class="reference external" href="https://www.robot-electronics.co.uk/htm/srf01tech.htm">https://www.robot-electronics.co.uk/htm/srf01tech.htm</a>.</p>
+<p>These sensors use one pin serial interfaces, this library however rely on Zerynth&#8217;s <em>streams</em> class and both pin of a serial peripheral are needed.
+Depending on the board that is used is necessary to put a resistor (1-5 kOhm) between Tx and Rx board&#8217;s pins and then connect the sensor&#8217;s serial port to Rx pin.</p>
+<p>With a single serial peripheral it is possible to control up to 16 SRF01&#8217;s.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">streams</span>
+<span class="kn">from</span> <span class="nn">community.anba.srf01</span> <span class="kn">import</span> <span class="n">srf01</span>
+
+<span class="n">streams</span><span class="o">.</span><span class="n">serial</span><span class="p">()</span>
+<span class="n">my_sensors</span> <span class="o">=</span> <span class="n">srf01</span><span class="o">.</span><span class="n">Srf</span><span class="p">(</span><span class="n">D0</span><span class="p">,</span><span class="n">SERIAL1</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;cheking versions...&quot;</span><span class="p">)</span>
+<span class="n">sft01</span> <span class="o">=</span> <span class="n">my_sensors</span><span class="o">.</span><span class="n">get_software_version</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c"># retrieve software version of sensor with address 1</span>
+<span class="n">sft04</span> <span class="o">=</span> <span class="n">my_sensors</span><span class="o">.</span><span class="n">get_software_version</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c"># retrieve software version of sensor with address 4</span>
+<span class="k">if</span> <span class="n">sft01</span><span class="o">!=</span><span class="mi">2</span> <span class="ow">or</span> <span class="n">sft04</span><span class="o">!=</span><span class="mi">2</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;wrong sensor&#39;s software version&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;done&quot;</span><span class="p">)</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">my_sensors</span><span class="o">.</span><span class="n">do_range</span><span class="p">()</span> <span class="c"># all connected sensor starts the ranging routine at the same time, the returned distance will be in cm</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">70</span><span class="p">)</span>
+        <span class="n">rng01</span> <span class="o">=</span> <span class="n">my_sensors</span><span class="o">.</span><span class="n">get_last_range</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">rng04</span> <span class="o">=</span> <span class="n">my_sensors</span><span class="o">.</span><span class="n">get_last_range</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;-----------------&quot;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;sensor 1: </span><span class="si">%03d</span><span class="s"> cm&quot;</span><span class="o">%</span><span class="n">rng01</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;sensor 4: </span><span class="si">%03d</span><span class="s"> cm&quot;</span><span class="o">%</span><span class="n">rng04</span><span class="p">)</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="srf-class">
+<h2>Srf Class<a class="headerlink" href="#srf-class" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="srf01.Srf">
+<em class="property">class </em><code class="descname">Srf</code><span class="sig-paren">(</span><em>pin</em>, <em>driver</em><span class="sig-paren">)</span><a class="headerlink" href="#srf01.Srf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Srf instance through which is possible to interact with srf01 sensors.
+Communications with sensors is via <em>driver</em> serial port, where <em>pin</em> is the Tx pin.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="srf01.change_address">
+<code class="descname">change_address</code><span class="sig-paren">(</span><em>current_addr</em>, <em>new_addr</em><span class="sig-paren">)</span><a class="headerlink" href="#srf01.change_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>With this method it is possible to change the sensor address. Only one sensor have to be
+connected to the serial in order to use this method. Valid address values are integeres
+from <code class="docutils literal"><span class="pre">1</span></code> to <code class="docutils literal"><span class="pre">16</span></code> included, otherwise <code class="xref py py-exc docutils literal"><span class="pre">InvalidAddress</span></code> exception is raised.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">streams</span>
+<span class="kn">from</span> <span class="nn">community.anba.srf01</span> <span class="kn">import</span> <span class="n">srf01</span>
+
+<span class="n">streams</span><span class="o">.</span><span class="n">serial</span><span class="p">()</span>
+<span class="n">my_sensors</span> <span class="o">=</span> <span class="n">srf01</span><span class="o">.</span><span class="n">Srf</span><span class="p">(</span><span class="n">D0</span><span class="p">,</span><span class="n">SERIAL1</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">my_sensors</span><span class="o">.</span><span class="n">change_address</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="srf01.get_software_version">
+<code class="descname">get_software_version</code><span class="sig-paren">(</span><em>addr</em><span class="sig-paren">)</span><a class="headerlink" href="#srf01.get_software_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a small integer representing the software version loaded in the sensor with address
+<em>addr</em>. If serial communication fails <code class="docutils literal"><span class="pre">-1</span></code> is returned. If <em>addr</em> is not an integer between <code class="docutils literal"><span class="pre">1</span></code> and
+<code class="docutils literal"><span class="pre">16</span></code> included, <code class="xref py py-exc docutils literal"><span class="pre">InvalidAddress</span></code> exception is raised.</p>
+<div class="highlight-python"><div class="highlight"><pre>import streams
+from community.anba.srf01 import srf01
+
+streams.serial()
+my_sensors = srf01.Srf(D0,SERIAL1)
+print(&quot;Checking software version...&quot;,end=&quot;&quot;)
+for i in range(10):
+    print(&quot;.&quot;,end=&quot;&quot;)
+    sft13 = my_sensors.get_software_version(13)
+    if sft13 != -1:
+        print(&quot; done!&quot;)
+        print(Sensor 13&#39;s software version: &quot;,sft13)
+        break
+if sft13 == -1:
+    print(&quot; ooops, failed :( &quot;)
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="srf01.get_status">
+<code class="descname">get_status</code><span class="sig-paren">(</span><em>addr</em><span class="sig-paren">)</span><a class="headerlink" href="#srf01.get_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a small integer representing the status (see sensor&#8217;s technical documentation for details about status value) of the sensor with address
+<em>addr</em>. If serial communication fails return <code class="docutils literal"><span class="pre">-1</span></code>. If <em>addr</em> is not an integer between <code class="docutils literal"><span class="pre">1</span></code> and
+<code class="docutils literal"><span class="pre">16</span></code> included, <code class="xref py py-exc docutils literal"><span class="pre">InvalidAddress</span></code> exception is raised. If the sensor is in advanced mode and it is locked, it can measure range all the way
+down to zero. Otherwise if the sensor is not locked or it is in standard mode the minimi range the SRF01 sensor ca detect is around 18 cm or 7 inches.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">streams</span>
+<span class="kn">from</span> <span class="nn">community.anba.srf01</span> <span class="kn">import</span> <span class="n">srf01</span>
+
+<span class="n">streams</span><span class="o">.</span><span class="n">serial</span><span class="p">()</span>
+<span class="n">my_sensors</span> <span class="o">=</span> <span class="n">srf01</span><span class="o">.</span><span class="n">Srf</span><span class="p">(</span><span class="n">D0</span><span class="p">,</span><span class="n">SERIAL1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Checking sensor&#39;s status...&quot;</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">sft08</span> <span class="o">=</span> <span class="n">my_sensors</span><span class="o">.</span><span class="n">get_status</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sft08</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot; done!&quot;</span><span class="p">)</span>
+        <span class="k">break</span>
+<span class="k">if</span> <span class="n">sft08</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot; ooops, failed :( &quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">sft08</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Standard mode, unlocked&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">sft08</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Standard mode, locked&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">sft08</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Advanced mode, unlocked&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span> <span class="c">#stf08 == 3</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Advanced mode, locked&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="srf01.get_last_range">
+<code class="descname">get_last_range</code><span class="sig-paren">(</span><em>addr</em><span class="sig-paren">)</span><a class="headerlink" href="#srf01.get_last_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a small integer representing last range done by the sensor with address <em>addr</em>.
+The unit of measure (cm or in) of the returned value depends on the last range command received by that sensor.
+If serial communication fails this method return <code class="docutils literal"><span class="pre">-1</span></code>. If <em>addr</em> is not an integer between <code class="docutils literal"><span class="pre">1</span></code> and
+<code class="docutils literal"><span class="pre">16</span></code> included, <code class="xref py py-exc docutils literal"><span class="pre">InvalidAddress</span></code> exception is raised.</p>
+<div class="highlight-python"><div class="highlight"><pre>import streams
+importfrom community.anba.srf01 import srf01
+
+streams.serial()
+
+my_sensors = srf01.Srf(D0,SERIAL1)
+
+my_sensors.do_range(3)
+my_sensors.do_range(7,&quot;in&quot;)
+
+sleep(70)
+
+rng03 = my_sensors.get_last_range(3)
+rng07 = my_sensors.get_last_range(7)
+
+print(&quot;Sensor 3: %03d cm&quot;%rng03)
+print(&quot;Sensor 7: %03d in&quot;%rng07)
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="srf01.do_range">
+<code class="descname">do_range</code><span class="sig-paren">(</span><em>addr=0</em>, <em>unit=&quot;cm&quot;</em><span class="sig-paren">)</span><a class="headerlink" href="#srf01.do_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method initiate a ranging on srf01 sensor. Using <code class="docutils literal"><span class="pre">get_last_range()</span></code> method after ~70 ms it
+is possible to get the result of the ranging. If <em>addr</em> is equal to <code class="docutils literal"><span class="pre">0</span></code> (default value) all
+connected sensors will start the ranging at the same time, otherwise only the sensor with address
+equal to <em>addr</em> will. If <em>addr</em> is not any of these value <code class="xref py py-exc docutils literal"><span class="pre">InvalidAddress0</span></code> exception is raised.
+<em>unit</em> define the measure unit of the result (retrievable with <code class="docutils literal"><span class="pre">get_last_range()</span></code>), it can be <code class="docutils literal"><span class="pre">&quot;cm&quot;</span></code>
+or <code class="docutils literal"><span class="pre">&quot;in&quot;</span></code> otherwise <code class="xref py py-exc docutils literal"><span class="pre">InvalidUnit</span></code> exception is raised.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="srf01.burst">
+<code class="descname">burst</code><span class="sig-paren">(</span><em>addr=0</em><span class="sig-paren">)</span><a class="headerlink" href="#srf01.burst" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transmit a burst without doing the ranging. If <em>addr</em> is equal to <code class="docutils literal"><span class="pre">0</span></code> (default value) all
+connected sensors will send the burst at the same time, otherwise only the sensor with address
+equal to <em>addr</em> will. If <em>addr</em> is not any of these value <code class="xref py py-exc docutils literal"><span class="pre">InvalidAddress0</span></code> exception is raised.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="srf01.do_fake_range">
+<code class="descname">do_fake_range</code><span class="sig-paren">(</span><em>addr=0</em>, <em>unit=&quot;cm&quot;</em><span class="sig-paren">)</span><a class="headerlink" href="#srf01.do_fake_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Same as <code class="docutils literal"><span class="pre">do_range()</span></code> except that the sensor do not send the 8-cycle ultrasonic burst out.
+This method is used where the burst has been transmitted by another sonar.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="srf01.get_range">
+<code class="descname">get_range</code><span class="sig-paren">(</span><em>addr</em>, <em>unit=&quot;cm&quot;</em><span class="sig-paren">)</span><a class="headerlink" href="#srf01.get_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Same as <code class="docutils literal"><span class="pre">do_range()</span></code> but this method block the thread (for ~70 ms) until the measured range is returned or <code class="docutils literal"><span class="pre">-1</span></code> if serial communication fails.
+Unlike <code class="docutils literal"><span class="pre">do_range()</span></code> here <em>addr</em> can not be <code class="docutils literal"><span class="pre">0</span></code> (to avoid multiple sensors to write on the communication bus at the same time), if <em>addr</em> is not an integer between <code class="docutils literal"><span class="pre">1</span></code> and
+<code class="docutils literal"><span class="pre">16</span></code> included, <code class="xref py py-exc docutils literal"><span class="pre">InvalidAddress</span></code> exception is raised.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">streams</span>
+<span class="kn">from</span> <span class="nn">community.anba.srf01</span> <span class="kn">import</span> <span class="n">srf01</span>
+
+<span class="n">streams</span><span class="o">.</span><span class="n">serial</span><span class="p">()</span>
+
+<span class="n">my_sensors</span> <span class="o">=</span> <span class="n">srf01</span><span class="o">.</span><span class="n">Srf</span><span class="p">(</span><span class="n">D0</span><span class="p">,</span><span class="n">SERIAL1</span><span class="p">)</span>
+
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">rng04</span> <span class="o">=</span> <span class="n">my_sensors</span><span class="o">.</span><span class="n">get_range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">rng09</span> <span class="o">=</span> <span class="n">my_sensors</span><span class="o">.</span><span class="n">get_range</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="s">&quot;in&quot;</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;------------&quot;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Sensor 4: </span><span class="si">%03d</span><span class="s"> cm&quot;</span><span class="o">%</span><span class="n">rng04</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Sensor 9: </span><span class="si">%03d</span><span class="s"> in&quot;</span><span class="o">%</span><span class="n">rng09</span><span class="p">)</span>
+
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">2000</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="srf01.get_fake_range">
+<code class="descname">get_fake_range</code><span class="sig-paren">(</span><em>addr</em>, <em>unit=&quot;cm&quot;</em><span class="sig-paren">)</span><a class="headerlink" href="#srf01.get_fake_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Same as <code class="docutils literal"><span class="pre">get_range()</span></code> except that the sensor do not send the 8-cycle ultrasonic burst out.
+This method is used where the burst has been transmitted by another sonar.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="srf01.set_advanced_mode">
+<code class="descname">set_advanced_mode</code><span class="sig-paren">(</span><em>addr=0</em><span class="sig-paren">)</span><a class="headerlink" href="#srf01.set_advanced_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method set the sensor on advanced mode, if <em>addr</em> is equal to <code class="docutils literal"><span class="pre">0</span></code> all
+connected sensors will be set.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="srf01.clear_advanced_mode">
+<code class="descname">clear_advanced_mode</code><span class="sig-paren">(</span><em>addr=0</em><span class="sig-paren">)</span><a class="headerlink" href="#srf01.clear_advanced_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method set the sensor on standard mode, if <em>addr</em> is equal to <code class="docutils literal"><span class="pre">0</span></code> all
+connected sensors will be set.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="srf01"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright Zerynth Team.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+  
+ <script type="text/javascript">
+ var vurl
+ if(location.href.indexOf("127.0.0.1")>=0) vurl=location.protocol+"//"+location.host+"/docs"
+ else vurl="http://doc.zerynth.com"
+ $(document).ready(function(){
+                   $('.wy-breadcrumbs a:contains("Docs")').before('<a href="'+vurl+'">Zerynth</a> &#187;')
+                   $('.wy-side-nav-search > a').removeClass("fa-home").removeClass("fa")
+                   $('.wy-side-nav-search').prepend('<div class="viper-circle"><a href="'+vurl+'"><span style="color:#1c5e60" class="zerynth-Logo2"></span></a></div>')
+ })
+ </script>
+
+
+</body>
+</html>

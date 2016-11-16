@@ -1,0 +1,8 @@
+{
+    "copyright": "Zerynth Team",
+    "title": "srf01",
+    "version": "1.0.0",
+    "files": [
+        ["srf01","srf01.py"]
+    ]
+}
